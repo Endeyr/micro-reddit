@@ -20,4 +20,3 @@ production:
   database: micro_reddit_production
   username: micro_reddit
   password: <%= ENV["MICRO_REDDIT_DATABASE_PASSWORD"] %>
-  url: <%= ENV['DATABASE_URL'] %>
