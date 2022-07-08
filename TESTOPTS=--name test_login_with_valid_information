@@ -1,0 +1,20 @@
+Running 2 tests in a single process (parallelization threshold is 50)
+Run options: --seed 64864
+
+# Running:
+
+EE
+
+Finished in 2.684916s, 0.7449 runs/s, 0.3725 assertions/s.
+
+  1) Error:
+UsersLoginTest#test_login_with_invalid_information:
+ArgumentError: unknown keyword: :session
+    test/integration/users_login_test.rb:11:in `block in <class:UsersLoginTest>'
+
+  2) Error:
+UsersLoginTest#test_login_with_valid_information:
+ArgumentError: unknown keyword: :session
+    test/integration/users_login_test.rb:20:in `block in <class:UsersLoginTest>'
+
+2 runs, 1 assertions, 0 failures, 2 errors, 0 skips
