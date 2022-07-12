@@ -1,11 +1,10 @@
-require 'test_helper'
+require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+
   def setup
-    @user = User.new(
-                      name: "Example User", email: "user@example.com",
-                      password: "foobar", password_confirmation: "foobar"
-                    )
+    @user = User.new(name: "Example User", email: "user@example.com",
+                     password: "foobar", password_confirmation: "foobar")
   end
 
   test "should be valid" do
@@ -52,16 +51,8 @@ class UserTest < ActiveSupport::TestCase
 
   test "email addresses should be unique" do
     duplicate_user = @user.dup
-    duplicate_user.email = @user.email.upcase
     @user.save
     assert_not duplicate_user.valid?
-  end
-
-  test "email addresses should be saved as lower-case" do
-    mixed_case_email = "Foo@ExAMPle.CoM"
-    @user.email = mixed_case_email
-    @user.save
-    assert_equal mixed_case_email.downcase, @user.reload.email
   end
 
   test "password should be present (nonblank)" do
@@ -78,6 +69,14 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.authenticated?(:remember, '')
   end
 
+  test "associated microposts should be destroyed" do
+    @user.save
+    @user.microposts.create!(content: "Lorem ipsum")
+    assert_difference 'Micropost.count', -1 do
+      @user.destroy
+    end
+  end
+
   test "should follow and unfollow a user" do
     michael = users(:michael)
     archer  = users(:archer)
@@ -87,6 +86,9 @@ class UserTest < ActiveSupport::TestCase
     assert archer.followers.include?(michael)
     michael.unfollow(archer)
     assert_not michael.following?(archer)
+    # Users can't follow themselves.
+    michael.follow(michael)
+    assert_not michael.following?(michael)
   end
 
   test "feed should have the right posts" do
@@ -97,9 +99,13 @@ class UserTest < ActiveSupport::TestCase
     lana.microposts.each do |post_following|
       assert michael.feed.include?(post_following)
     end
-    # Posts from self
+    # Self-posts for user with followers
     michael.microposts.each do |post_self|
       assert michael.feed.include?(post_self)
+    end
+    # Self-posts for user with no followers
+    archer.microposts.each do |post_self|
+      assert archer.feed.include?(post_self)
     end
     # Posts from unfollowed user
     archer.microposts.each do |post_unfollowed|
