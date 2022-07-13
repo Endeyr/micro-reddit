@@ -1,3 +1,8 @@
+"scripts": {
+  "start": "node index.js",
+  "build": "webpack"
+}
+
 {
   "dependencies": {
     "@rails/webpacker": "5.4.3",
@@ -7,9 +12,4 @@
   "devDependencies": {
     "webpack-dev-server": "^3"
   }
-}
-
-"scripts": {
-  "start": "node index.js",
-  "build": "webpack"
 }
