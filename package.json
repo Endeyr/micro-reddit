@@ -5,7 +5,11 @@
     "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
-    "start": "node index.js",
     "webpack-dev-server": "^3"
   }
+}
+
+"scripts": {
+  "start": "node index.js",
+  "build": "webpack"
 }
